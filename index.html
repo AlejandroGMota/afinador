@@ -9,7 +9,8 @@
 <link rel="canonical" href="https://afinador.alejandrogmota.com/">
 <meta name="robots" content="index, follow">
 <meta name="author" content="Enrique Alejandro Garcia Mota">
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%23C42E27'/%3E%3Cpath d='M16 7v14' stroke='%23F7F1E3' stroke-width='3' stroke-linecap='round'/%3E%3Ccircle cx='16' cy='23' r='3' fill='%23F7F1E3'/%3E%3C/svg%3E">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="apple-touch-icon" href="/apple-touch-icon.png">
 <meta property="og:type" content="website">
 <meta property="og:locale" content="es_MX">
 <meta property="og:site_name" content="Afinador">
@@ -61,6 +62,7 @@ header b{font-size:22px}
 .label{font-size:12px;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted)}
 .note{display:flex;align-items:flex-start;gap:4px}
 .note b{font-size:96px;line-height:1}
+.note b.idle{color:var(--track)}
 .note span{font-size:28px;font-weight:500;color:var(--muted);margin-top:10px}
 .hz{display:flex;align-items:baseline;gap:10px}
 .hz b{font-size:22px;font-weight:500}
@@ -78,6 +80,7 @@ header b{font-size:22px}
 .pickup button.tuned{border-color:var(--ok)}
 .pickup button.active{background:var(--wood);color:var(--cream)}
 .mic{height:56px;border-radius:16px;border:none;background:var(--wood);color:var(--cream);font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:17px;display:flex;align-items:center;justify-content:center;gap:10px}
+@media (min-width:700px){.app{justify-content:center;gap:24px}}
 .is-off{color:var(--off)}
 .is-ok{color:var(--ok)}
 /* Crawlable help text below the tuner */
@@ -104,7 +107,7 @@ header b{font-size:22px}
 
 <section class="guard">
 <span class="label" id="string">Toca una cuerda</span>
-<div class="note sg"><b id="note">–</b><span id="octave"></span></div>
+<div class="note sg"><b id="note" class="idle">–</b><span id="octave"></span></div>
 <div class="hz"><b class="sg" id="hz">— Hz</b><span id="target"></span></div>
 <svg role="img" aria-label="Medidor de afinación en cents" viewBox="0 0 342 196" fill="none">
 <path d="M23.3 154 A150 150 0 0 1 318.7 154" stroke="#D9CFB8" stroke-width="6" stroke-linecap="round"/>
@@ -241,6 +244,7 @@ function renderPoles() {
 }
 
 function renderIdle(msg) {
+  if (!history.length) { el.note.textContent = "–"; el.note.classList.add("idle"); el.octave.textContent = ""; }
   el.cents.innerHTML = "&nbsp;";
   el.cents.className = "cents sg";
   el.hint.textContent = msg;
@@ -264,6 +268,7 @@ function render(f) {
 
   el.string.textContent = s.label;
   el.note.textContent = s.name;
+  el.note.classList.remove("idle");
   el.octave.textContent = s.octave;
   el.hz.textContent = `${f.toFixed(1)} Hz`;
   el.target.textContent = `objetivo ${s.freq.toFixed(2)} Hz`;
@@ -361,6 +366,7 @@ el.poles.forEach((b, i) => b.addEventListener("click", () => {
   const s = STRINGS[i];
   el.string.textContent = s.label;
   el.note.textContent = s.name;
+  el.note.classList.remove("idle");
   el.octave.textContent = s.octave;
   el.target.textContent = `objetivo ${s.freq.toFixed(2)} Hz`;
 }));
