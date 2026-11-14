@@ -4,7 +4,47 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="theme-color" content="#C42E27">
-<title>Afinador</title>
+<title>Afinador de guitarra online gratis · con micrófono, sin anuncios</title>
+<meta name="description" content="Afina tu guitarra gratis desde el navegador con el micrófono del celular o la computadora. Afinación estándar E A D G B E, cuerda por cuerda, sin anuncios, sin registro y sin instalar nada.">
+<link rel="canonical" href="https://afinador.alejandrogmota.com/">
+<meta name="robots" content="index, follow">
+<meta name="author" content="Enrique Alejandro Garcia Mota">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%23C42E27'/%3E%3Cpath d='M16 7v14' stroke='%23F7F1E3' stroke-width='3' stroke-linecap='round'/%3E%3Ccircle cx='16' cy='23' r='3' fill='%23F7F1E3'/%3E%3C/svg%3E">
+<meta property="og:type" content="website">
+<meta property="og:locale" content="es_MX">
+<meta property="og:site_name" content="Afinador">
+<meta property="og:title" content="Afinador de guitarra online gratis, sin anuncios">
+<meta property="og:description" content="Afina tu guitarra con el micrófono, directo en el navegador. Gratis, sin anuncios y sin instalar nada.">
+<meta property="og:url" content="https://afinador.alejandrogmota.com/">
+<meta name="twitter:card" content="summary">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "WebApplication",
+      "name": "Afinador de guitarra online",
+      "url": "https://afinador.alejandrogmota.com/",
+      "description": "Afinador de guitarra gratuito que funciona en el navegador con el micrófono. Afinación estándar E A D G B E.",
+      "applicationCategory": "MultimediaApplication",
+      "operatingSystem": "Cualquiera con navegador moderno",
+      "inLanguage": "es",
+      "isAccessibleForFree": true,
+      "offers": { "@type": "Offer", "price": "0", "priceCurrency": "MXN" },
+      "author": { "@type": "Person", "name": "Enrique Alejandro Garcia Mota", "url": "https://blog.alejandrogmota.com" }
+    },
+    {
+      "@type": "FAQPage",
+      "mainEntity": [
+        { "@type": "Question", "name": "¿El afinador es gratis?", "acceptedAnswer": { "@type": "Answer", "text": "Sí. Es gratis, sin anuncios, sin registro y sin instalar nada." } },
+        { "@type": "Question", "name": "¿Se graba o se envía el audio del micrófono?", "acceptedAnswer": { "@type": "Answer", "text": "No. El sonido se analiza en tu propio dispositivo y nunca sale de él." } },
+        { "@type": "Question", "name": "¿Cuáles son las notas de la afinación estándar de guitarra?", "acceptedAnswer": { "@type": "Answer", "text": "De la 6.ª a la 1.ª cuerda: E2 (82.41 Hz), A2 (110 Hz), D3 (146.83 Hz), G3 (196 Hz), B3 (246.94 Hz) y E4 (329.63 Hz). En cifrado latino: Mi, La, Re, Sol, Si, Mi." } },
+        { "@type": "Question", "name": "¿Funciona con guitarra eléctrica?", "acceptedAnswer": { "@type": "Answer", "text": "Sí, aunque desenchufada suena bajito: acerca el celular al cuerpo de la guitarra." } }
+      ]
+    }
+  ]
+}
+</script>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Space+Grotesk:wght@500;700&display=swap">
 <style>
 /* Palette taken from a red Yamaha EG112: body, pickguard, rosewood, chrome */
@@ -40,6 +80,18 @@ header b{font-size:22px}
 .mic{height:56px;border-radius:16px;border:none;background:var(--wood);color:var(--cream);font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:17px;display:flex;align-items:center;justify-content:center;gap:10px}
 .is-off{color:var(--off)}
 .is-ok{color:var(--ok)}
+/* Crawlable help text below the tuner */
+.info{max-width:390px;margin:0 auto;padding:8px 16px 40px;line-height:1.55;font-size:15px}
+.info h1{font-family:'Space Grotesk',sans-serif;font-size:24px;margin:8px 0 8px}
+.info h2{font-family:'Space Grotesk',sans-serif;font-size:18px;margin:28px 0 8px}
+.info p,.info li{margin:0 0 8px}
+.info ol{padding-left:20px;margin:0}
+.info table{width:100%;border-collapse:collapse;font-size:14px}
+.info th,.info td{text-align:left;padding:6px 4px;border-bottom:1px solid rgba(247,241,227,.25)}
+.info details{border-bottom:1px solid rgba(247,241,227,.25);padding:10px 0}
+.info summary{cursor:pointer;font-weight:600}
+.info footer{margin-top:28px;font-size:13px;opacity:.8}
+.info a{color:var(--cream)}
 </style>
 </head>
 <body>
@@ -98,6 +150,40 @@ header b{font-size:22px}
 </button>
 
 </main>
+
+<article class="info">
+<h1>Afinador de guitarra online, gratis y sin anuncios</h1>
+<p>Afina tu guitarra acústica, clásica o eléctrica con el micrófono de tu celular o computadora. Funciona directo en el navegador: sin registro, sin anuncios y sin instalar ninguna app.</p>
+
+<h2>Cómo afinar la guitarra</h2>
+<ol>
+<li>Pulsa <strong>Iniciar afinador</strong> y permite el acceso al micrófono.</li>
+<li>Toca una cuerda al aire, empezando por la 6.ª (la más gruesa).</li>
+<li>Si la aguja se va a la izquierda, la cuerda está baja: aprieta la clavija. Si se va a la derecha, está alta: aflójala.</li>
+<li>Cuando la aguja queda en verde en el centro, la cuerda está afinada y su botón se marca.</li>
+</ol>
+
+<h2>Notas de la afinación estándar</h2>
+<table>
+<thead><tr><th>Cuerda</th><th>Nota</th><th>Frecuencia</th></tr></thead>
+<tbody>
+<tr><td>6.ª</td><td>E2 · Mi</td><td>82.41 Hz</td></tr>
+<tr><td>5.ª</td><td>A2 · La</td><td>110.00 Hz</td></tr>
+<tr><td>4.ª</td><td>D3 · Re</td><td>146.83 Hz</td></tr>
+<tr><td>3.ª</td><td>G3 · Sol</td><td>196.00 Hz</td></tr>
+<tr><td>2.ª</td><td>B3 · Si</td><td>246.94 Hz</td></tr>
+<tr><td>1.ª</td><td>E4 · Mi</td><td>329.63 Hz</td></tr>
+</tbody>
+</table>
+
+<h2>Preguntas frecuentes</h2>
+<details><summary>¿El afinador es gratis?</summary><p>Sí. Es gratis, sin anuncios, sin registro y sin instalar nada.</p></details>
+<details><summary>¿Se graba o se envía el audio del micrófono?</summary><p>No. El sonido se analiza en tu propio dispositivo y nunca sale de él.</p></details>
+<details><summary>¿Funciona con guitarra eléctrica?</summary><p>Sí, aunque desenchufada suena bajito: acerca el celular al cuerpo de la guitarra.</p></details>
+<details><summary>¿Qué tan preciso es?</summary><p>Marca una cuerda como afinada cuando queda a menos de 5 cents de la nota, una diferencia que el oído casi no distingue.</p></details>
+
+<footer>Hecho por <a href="https://blog.alejandrogmota.com">Enrique Garcia</a> · <a href="https://github.com/AlejandroGMota/afinador">código abierto</a></footer>
+</article>
 
 <script type="module">
 // Pitch detection: McLeod Pitch Method via pitchy (MIT).

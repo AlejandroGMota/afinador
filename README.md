@@ -12,7 +12,7 @@ python3 -m http.server 8000
 
 ## Subir cambios
 ```sh
-scp -i ~/.ssh/oracle_chavarria_vm index.html ubuntu@160.34.222.215:/var/www/afinador/
+scp -i ~/.ssh/oracle_chavarria_vm index.html robots.txt sitemap.xml ubuntu@160.34.222.215:/var/www/afinador/
 ```
 
 ## Calibración
