@@ -29,7 +29,7 @@ Afinador web de guitarra, gratis, sin anuncios, sin registro y sin backend. Todo
 | iOS Safari | ⚠️ Sin probar |
 | Android Chrome / Edge | ⚠️ Sin probar |
 | Deploy en Oracle (nginx + HTTPS) | ✅ `afinador.160-34-222-215.sslip.io` |
-| Dominio `afinador.alejandrogmota.com` | ⏳ Esperando registro DNS en Namecheap |
+| Dominio `afinador.alejandrogmota.com` | ✅ HTTPS, sslip.io redirige con 301 |
 | SEO on-page (meta, OG, JSON-LD, FAQ, sitemap) | ✅ |
 | Google Search Console | ⏳ Pendiente (requiere dominio) |
 | Repo público | ✅ github.com/AlejandroGMota/afinador |
@@ -75,9 +75,9 @@ Paleta tomada de la Yamaha EG112 roja: cuerpo `#C42E27`, pickguard `#F4EEDD`, pa
 
 ## 3. Fase 0 — Terminar el lanzamiento (esta semana)
 
-- [ ] Crear el registro A `afinador → 160.34.222.215` en Namecheap y verificar con `dig`.
-- [ ] Ampliar el certificado al dominio con `certbot --expand`.
-- [ ] Redirigir `sslip.io` → dominio con 301 (como en finanzas).
+- [x] Crear el registro A `afinador → 160.34.222.215` en Namecheap y verificar con `dig`.
+- [x] Ampliar el certificado al dominio con `certbot --expand`.
+- [x] Redirigir `sslip.io` → dominio con 301 (como en finanzas).
 - [ ] Probar con guitarra real en Android (Edge y Chrome), empezando por la 6.ª cuerda.
 - [ ] Probar en iOS Safari (pedir un iPhone prestado o BrowserStack gratis).
 - [ ] Calibrar `MIN_RMS` y `MIN_CLARITY`.
