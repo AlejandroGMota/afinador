@@ -1,0 +1,285 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#C42E27">
+<title>Afinador</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Space+Grotesk:wght@500;700&display=swap">
+<style>
+/* Palette taken from a red Yamaha EG112: body, pickguard, rosewood, chrome */
+:root{--body:#C42E27;--guard:#F4EEDD;--pickup:#E9DFC3;--edge:#CFC3A3;--pole:#D8D4CA;--wood:#2B1A14;--muted:#6B564B;--track:#D9CFB8;--ok:#1E8A52;--off:#B3261F;--cream:#F7F1E3}
+*{box-sizing:border-box}
+body{margin:0;background:var(--body);color:var(--cream);font-family:Inter,system-ui,sans-serif}
+.app{max-width:390px;min-height:100vh;min-height:100dvh;margin:0 auto;padding:24px 16px;display:flex;flex-direction:column;justify-content:space-between;gap:16px}
+.sg{font-family:'Space Grotesk',sans-serif}
+button{font-family:inherit;cursor:pointer}
+header{display:flex;align-items:center;justify-content:space-between;padding:0 4px}
+header b{font-size:22px}
+.tuning{font-size:13px;font-weight:500}
+.guard{background:var(--guard);color:var(--wood);border-radius:28px;padding:20px;display:flex;flex-direction:column;align-items:center;gap:6px}
+.label{font-size:12px;letter-spacing:1.5px;text-transform:uppercase;color:var(--muted)}
+.note{display:flex;align-items:flex-start;gap:4px}
+.note b{font-size:96px;line-height:1}
+.note span{font-size:28px;font-weight:500;color:var(--muted);margin-top:10px}
+.hz{display:flex;align-items:baseline;gap:10px}
+.hz b{font-size:22px;font-weight:500}
+.hz span{font-size:13px;color:var(--muted)}
+.guard svg{width:100%;height:auto}
+.cents{font-size:22px;font-weight:700}
+.hint{font-size:14px;color:var(--muted);min-height:20px}
+.row{width:100%;display:flex;align-items:center;justify-content:space-between;font-size:13px;color:var(--muted);margin-top:8px}
+.auto{height:44px;padding:0 14px;border-radius:22px;border:1.5px solid var(--wood);background:transparent;color:var(--wood);font-size:13px;font-weight:600}
+.auto[aria-pressed="true"]{background:var(--wood);color:var(--cream)}
+/* String selector drawn as a single-coil pickup: six pole pieces, six strings */
+.pickup{width:100%;display:flex;justify-content:space-between;padding:8px;border-radius:30px;background:var(--pickup);border:1px solid var(--edge)}
+.pickup button{width:44px;height:44px;border-radius:50%;border:2px solid transparent;background:var(--pole);color:var(--wood);font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:16px;padding:0}
+.pickup button small{font-size:10px;font-weight:500}
+.pickup button.tuned{border-color:var(--ok)}
+.pickup button.active{background:var(--wood);color:var(--cream)}
+.mic{height:56px;border-radius:16px;border:none;background:var(--wood);color:var(--cream);font-family:'Space Grotesk',sans-serif;font-weight:700;font-size:17px;display:flex;align-items:center;justify-content:center;gap:10px}
+.is-off{color:var(--off)}
+.is-ok{color:var(--ok)}
+</style>
+</head>
+<body>
+<main class="app">
+
+<header>
+<b class="sg">Afinador</b>
+<span class="tuning">Estándar · E A D G B E</span>
+</header>
+
+<section class="guard">
+<span class="label" id="string">Toca una cuerda</span>
+<div class="note sg"><b id="note">–</b><span id="octave"></span></div>
+<div class="hz"><b class="sg" id="hz">— Hz</b><span id="target"></span></div>
+<svg role="img" aria-label="Medidor de afinación en cents" viewBox="0 0 342 196" fill="none">
+<path d="M23.3 154 A150 150 0 0 1 318.7 154" stroke="#D9CFB8" stroke-width="6" stroke-linecap="round"/>
+<path d="M150.1 31.5 A150 150 0 0 1 191.9 31.5" stroke="#1E8A52" stroke-width="6" stroke-linecap="round"/>
+<g stroke="#8A7A6C" stroke-width="2" stroke-linecap="round">
+<line x1="171" y1="44" x2="171" y2="56" transform="rotate(-80 171 180)"/>
+<line x1="171" y1="44" x2="171" y2="52" transform="rotate(-64 171 180)"/>
+<line x1="171" y1="44" x2="171" y2="52" transform="rotate(-48 171 180)"/>
+<line x1="171" y1="44" x2="171" y2="52" transform="rotate(-32 171 180)"/>
+<line x1="171" y1="44" x2="171" y2="52" transform="rotate(-16 171 180)"/>
+<line x1="171" y1="44" x2="171" y2="58"/>
+<line x1="171" y1="44" x2="171" y2="52" transform="rotate(16 171 180)"/>
+<line x1="171" y1="44" x2="171" y2="52" transform="rotate(32 171 180)"/>
+<line x1="171" y1="44" x2="171" y2="52" transform="rotate(48 171 180)"/>
+<line x1="171" y1="44" x2="171" y2="52" transform="rotate(64 171 180)"/>
+<line x1="171" y1="44" x2="171" y2="56" transform="rotate(80 171 180)"/>
+</g>
+<g id="needle" transform="rotate(0 171 180)" style="transition:transform .12s linear">
+<line x1="171" y1="180" x2="171" y2="50" stroke="currentColor" stroke-width="4" stroke-linecap="round"/>
+</g>
+<circle cx="171" cy="180" r="9" fill="#2B1A14"/>
+<text x="14" y="186" fill="#6B564B" font-family="Inter, sans-serif" font-size="13">♭ −50</text>
+<text x="284" y="186" fill="#6B564B" font-family="Inter, sans-serif" font-size="13">+50 ♯</text>
+<text x="171" y="18" fill="#6B564B" font-family="Inter, sans-serif" font-size="13" text-anchor="middle">0</text>
+</svg>
+<span class="cents sg" id="cents">&nbsp;</span>
+<span class="hint" id="hint">Pulsa el botón para empezar</span>
+
+<div class="row"><span>Cuerda</span><button type="button" class="auto" id="auto" aria-pressed="true">Auto: detectar cuerda</button></div>
+<div class="pickup" id="pickup">
+<button type="button" data-i="0" aria-label="6a cuerda, E2">E<small>2</small></button>
+<button type="button" data-i="1" aria-label="5a cuerda, A2">A<small>2</small></button>
+<button type="button" data-i="2" aria-label="4a cuerda, D3">D<small>3</small></button>
+<button type="button" data-i="3" aria-label="3a cuerda, G3">G<small>3</small></button>
+<button type="button" data-i="4" aria-label="2a cuerda, B3">B<small>3</small></button>
+<button type="button" data-i="5" aria-label="1a cuerda, E4">E<small>4</small></button>
+</div>
+</section>
+
+<button type="button" class="mic" id="mic">
+<svg aria-hidden="true" width="18" height="18" viewBox="0 0 18 18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="6.5" y="1.5" width="5" height="9" rx="2.5"/><path d="M3.5 8.5a5.5 5.5 0 0 0 11 0M9 14v2.5"/></svg>
+<span id="micLabel">Iniciar afinador</span>
+</button>
+
+</main>
+
+<script type="module">
+// Pitch detection: McLeod Pitch Method via pitchy (MIT).
+// To drop the CDN dependency, download the module and import it from "./pitchy.js".
+import { PitchDetector } from "https://esm.sh/pitchy@4.1.0";
+
+const STRINGS = [
+  { name: "E", octave: 2, freq: 82.41, label: "6a cuerda" },
+  { name: "A", octave: 2, freq: 110.0, label: "5a cuerda" },
+  { name: "D", octave: 3, freq: 146.83, label: "4a cuerda" },
+  { name: "G", octave: 3, freq: 196.0, label: "3a cuerda" },
+  { name: "B", octave: 3, freq: 246.94, label: "2a cuerda" },
+  { name: "E", octave: 4, freq: 329.63, label: "1a cuerda" },
+];
+const BUFFER_SIZE = 4096; // ~7 periods of E2 at 48 kHz
+const MIN_CLARITY = 0.9;
+const MIN_RMS = 0.01;
+const MIN_HZ = 60;
+const MAX_HZ = 420;
+const IN_TUNE_CENTS = 5;
+const HOLD_MS = 600; // time in tune before a string is marked as done
+const SILENCE_MS = 1500;
+
+const $ = (id) => document.getElementById(id);
+const el = {
+  string: $("string"), note: $("note"), octave: $("octave"), hz: $("hz"),
+  target: $("target"), needle: $("needle"), cents: $("cents"), hint: $("hint"),
+  auto: $("auto"), mic: $("mic"), micLabel: $("micLabel"),
+  poles: [...$("pickup").querySelectorAll("button")],
+};
+
+let ctx = null, stream = null, analyser = null, detector = null, buf = null, raf = 0;
+let starting = false;
+let auto = true, selected = 1;
+let history = [], inTuneSince = 0, lastHeard = 0;
+
+const centsOff = (f, target) => 1200 * Math.log2(f / target);
+const median = (xs) => [...xs].sort((a, b) => a - b)[Math.floor(xs.length / 2)];
+
+function nearestString(f) {
+  let best = 0, bestDist = Infinity;
+  STRINGS.forEach((s, i) => {
+    const d = Math.abs(centsOff(f, s.freq));
+    if (d < bestDist) { bestDist = d; best = i; }
+  });
+  return best;
+}
+
+function renderPoles() {
+  el.poles.forEach((b, i) => {
+    const on = i === selected;
+    b.classList.toggle("active", on);
+    b.setAttribute("aria-pressed", String(on));
+  });
+}
+
+function renderIdle(msg) {
+  el.cents.innerHTML = "&nbsp;";
+  el.cents.className = "cents sg";
+  el.hint.textContent = msg;
+  el.hz.textContent = "— Hz";
+  el.needle.setAttribute("transform", "rotate(0 171 180)");
+  el.needle.style.color = "#8A7A6C";
+}
+
+function render(f) {
+  if (auto) {
+    const nearest = nearestString(f);
+    // A new string must earn its own hold time; don't inherit the previous one's.
+    if (nearest !== selected) inTuneSince = 0;
+    selected = nearest;
+    renderPoles();
+  }
+  const s = STRINGS[selected];
+  const cents = centsOff(f, s.freq);
+  const shown = Math.max(-50, Math.min(50, cents));
+  const ok = Math.abs(cents) <= IN_TUNE_CENTS;
+
+  el.string.textContent = s.label;
+  el.note.textContent = s.name;
+  el.octave.textContent = s.octave;
+  el.hz.textContent = `${f.toFixed(1)} Hz`;
+  el.target.textContent = `objetivo ${s.freq.toFixed(2)} Hz`;
+  el.needle.setAttribute("transform", `rotate(${(shown * 1.6).toFixed(1)} 171 180)`);
+  el.needle.style.color = ok ? "#1E8A52" : "#B3261F";
+  el.cents.textContent = `${cents > 0 ? "+" : cents < 0 ? "−" : ""}${Math.abs(Math.round(cents))} cents`;
+  el.cents.className = `cents sg ${ok ? "is-ok" : "is-off"}`;
+  el.hint.textContent = ok ? "Afinada" : cents < 0 ? "Está baja: aprieta la clavija" : "Está alta: afloja la clavija";
+
+  const now = performance.now();
+  if (!ok) inTuneSince = 0;
+  else if (!inTuneSince) inTuneSince = now;
+  else if (now - inTuneSince >= HOLD_MS) el.poles[selected].classList.add("tuned");
+}
+
+function tick() {
+  raf = requestAnimationFrame(tick);
+  analyser.getFloatTimeDomainData(buf);
+  let sum = 0;
+  for (let i = 0; i < buf.length; i++) sum += buf[i] * buf[i];
+  const rms = Math.sqrt(sum / buf.length);
+  const [pitch, clarity] = detector.findPitch(buf, ctx.sampleRate);
+  const now = performance.now();
+
+  if (rms >= MIN_RMS && clarity >= MIN_CLARITY && pitch >= MIN_HZ && pitch <= MAX_HZ) {
+    history.push(pitch);
+    if (history.length > 5) history.shift();
+    lastHeard = now;
+    render(median(history));
+  } else if (now - lastHeard > SILENCE_MS && history.length) {
+    history = [];
+    inTuneSince = 0;
+    renderIdle("Toca una cuerda");
+  }
+}
+
+async function start() {
+  if (!navigator.mediaDevices?.getUserMedia) {
+    el.hint.textContent = "Este navegador no da acceso al micrófono (requiere HTTPS)";
+    return;
+  }
+  // A second tap while the permission prompt is open would open a second stream.
+  starting = true;
+  try {
+    stream = await navigator.mediaDevices.getUserMedia({
+      audio: { echoCancellation: false, noiseSuppression: false, autoGainControl: false },
+    });
+  } catch (err) {
+    el.hint.textContent = err.name === "NotAllowedError"
+      ? "Permiso de micrófono denegado"
+      : "No se pudo abrir el micrófono";
+    console.error("[afinador] getUserMedia failed:", err);
+    return;
+  } finally {
+    starting = false;
+  }
+  ctx = new (window.AudioContext || window.webkitAudioContext)();
+  await ctx.resume(); // iOS starts the context suspended
+  analyser = ctx.createAnalyser();
+  analyser.fftSize = BUFFER_SIZE;
+  ctx.createMediaStreamSource(stream).connect(analyser);
+  detector = PitchDetector.forFloat32Array(analyser.fftSize);
+  buf = new Float32Array(analyser.fftSize);
+  el.micLabel.textContent = "Escuchando… tocar para detener";
+  renderIdle("Toca una cuerda");
+  tick();
+}
+
+function stop() {
+  cancelAnimationFrame(raf);
+  stream?.getTracks().forEach((t) => t.stop());
+  ctx?.close();
+  ctx = stream = analyser = null;
+  history = [];
+  inTuneSince = 0;
+  el.micLabel.textContent = "Iniciar afinador";
+  renderIdle("Pulsa el botón para empezar");
+}
+
+el.mic.addEventListener("click", () => {
+  if (starting) return;
+  ctx ? stop() : start();
+});
+el.auto.addEventListener("click", () => {
+  auto = !auto;
+  el.auto.setAttribute("aria-pressed", String(auto));
+});
+el.poles.forEach((b, i) => b.addEventListener("click", () => {
+  auto = false;
+  el.auto.setAttribute("aria-pressed", "false");
+  selected = i;
+  history = [];
+  inTuneSince = 0;
+  renderPoles();
+  const s = STRINGS[i];
+  el.string.textContent = s.label;
+  el.note.textContent = s.name;
+  el.octave.textContent = s.octave;
+  el.target.textContent = `objetivo ${s.freq.toFixed(2)} Hz`;
+}));
+document.addEventListener("visibilitychange", () => { if (document.hidden && ctx) stop(); });
+renderPoles();
+</script>
+</body>
+</html>
